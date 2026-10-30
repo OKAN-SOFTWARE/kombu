@@ -5,10 +5,14 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from kombu.asynchronous.timer import Entry, Timer, to_timestamp
+from kombu.asynchronous.timer import EPOCH, Entry, Timer, to_timestamp
 
 
 class test_to_timestamp:
+
+    def test_builtin_utc_does_not_require_timezone_database(self):
+        assert EPOCH.tzinfo is timezone.utc
+        assert to_timestamp.__defaults__[0] is timezone.utc
 
     def test_timestamp(self):
         assert to_timestamp(3.13) == 3.13
